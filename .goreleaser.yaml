@@ -24,7 +24,7 @@ changelog:
   use: github-native
   skip: '{{ ne .Env.ENABLE_RELEASE_PIPELINE "true" }}'
 krews:
-  - name: kubectl-catalogd
+  - name: catalogd
     skip_upload: '{{ ne .Env.ENABLE_RELEASE_PIPELINE "true" }}'
     short_description: list, inspect, and search contents of catalogd Catalog resources
     description: kubectl plugin to interact with catalogd's HTTP server to list, inspect, and search the contents of Catalog resources
