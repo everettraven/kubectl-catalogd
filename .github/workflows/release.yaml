@@ -36,7 +36,6 @@ jobs:
         elif [[ $GITHUB_REF == refs/heads/* ]]; then
           # Branch build.
           echo GORELEASER_ARGS="--clean --skip-validate" >> $GITHUB_ENV
-        else
         fi
 
     - name: Run goreleaser
