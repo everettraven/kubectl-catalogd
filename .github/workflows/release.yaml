@@ -35,7 +35,7 @@ jobs:
           echo ENABLE_RELEASE_PIPELINE=true >> $GITHUB_ENV
         elif [[ $GITHUB_REF == refs/heads/* ]]; then
           # Branch build.
-          echo GORELEASER_ARGS="--clean --skip-validate" >> $GITHUB_ENV
+          echo GORELEASER_ARGS=" --snapshot --clean --skip=validate" >> $GITHUB_ENV
         fi
 
     - name: Run goreleaser
