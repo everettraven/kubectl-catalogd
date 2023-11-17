@@ -6,6 +6,9 @@ builds:
   - id: kubectl-catalogd
     main: main.go
     binary: catalogd
+    asmflags: "{{ .Env.GO_BUILD_ASMFLAGS }}"
+    gcflags: "{{ .Env.GO_BUILD_GCFLAGS }}"
+    ldflags: "{{ .Env.GO_BUILD_LDFLAGS }}"
     mod_timestamp: "{{ .CommitTimestamp }}"
     goos:
     - linux
@@ -22,9 +25,24 @@ changelog:
   skip: '{{ ne .Env.ENABLE_RELEASE_PIPELINE "true" }}'
 krews:
   - name: kubectl-catalogd
-    description: kubectl plugin to interact with catalogd's HTTP server to fetch and view the contents of Catalog resources
+    skip_upload: '{{ ne .Env.ENABLE_RELEASE_PIPELINE "true" }}'
+    short_description: list, inspect, and search contents of catalogd Catalog resources
+    description: kubectl plugin to interact with catalogd's HTTP server to list, inspect, and search the contents of Catalog resources
+    homepage: https://github.com/everettraven/kubectl-catalogd
+    url_template: https://github.com/everettraven/kubectl-catalogd/releases/download/{{ .Tag }}/{{ .ArtifactName }}
     commit_author:
-      name: goreleaserbot
-      email: bot@goreleaser.com
+      name: everettraven
+      email: everettraven@gmail.com
     commit_msg_template: "Krew plugin update for {{ .ProjectName }} version {{ .Tag }}"
-
+    repository:
+      owner: everettraven
+      name: krew-index
+      token: '{{ .Env.KREW_INDEX_TOKEN }}'
+      branch: 'kubectl-catalogd-{{ .Tag }}'
+      pull_request:
+        enabled: true
+        draft: false
+        base:
+          owner: everettraven
+          name: krew-index
+          branch: main

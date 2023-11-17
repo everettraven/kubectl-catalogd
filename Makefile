@@ -1,11 +1,20 @@
 include .bingo/Variables.mk
 
-CATALOGD_VERSION ?= $(shell go list -mod=mod -m -f "{{.Version}}" github.com/operator-framework/catalogd)
+export CATALOGD_VERSION ?= $(shell go list -mod=mod -m -f "{{.Version}}" github.com/operator-framework/catalogd)
+export GIT_VERSION       ?= $(shell git describe --tags --always --dirty)
+export VERSION_PKG       ?= $(shell go list -m)/internal/cli
+export GO_BUILD_ASMFLAGS ?= all=-trimpath=${PWD}
+export GO_BUILD_LDFLAGS  ?= -s -w -X "$(VERSION_PKG).version=$(GIT_VERSION)" -X "$(VERSION_PKG).catalogd_version=$(CATALOGD_VERSION)"
+export GO_BUILD_GCFLAGS  ?= all=-trimpath=${PWD}
 CERT_MGR_VERSION ?= v1.9.0
 
 .PHONY: build
 build:
-	go build -o kubectl-catalogd main.go
+	go build \
+	-asmflags '$(GO_BUILD_ASMFLAGS)' \
+	-ldflags '$(GO_BUILD_LDFLAGS)' \
+	-gcflags '$(GO_BUILD_GCFLAGS)' \
+	-o kubectl-catalogd main.go
 
 UNIT_TEST_DIRS=$(shell go list ./... | grep -v /test/)
 .PHONY: unit

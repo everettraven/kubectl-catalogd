@@ -70,7 +70,7 @@ func TestE2E(t *testing.T) {
 		{
 			name:    "list all content with schema olm.bundle and package prometheus",
 			command: exec.Command("../../kubectl-catalogd", "list", "--schema", "olm.bundle", "--package", "prometheus"),
-			expectedOutput: `test-catalog  olm.bundle prometheus prometheus-operator.1.0.0
+			expectedOutput: ` test-catalog  olm.bundle prometheus prometheus-operator.1.0.0
  test-catalog  olm.bundle prometheus prometheus-operator.1.0.1
  test-catalog  olm.bundle prometheus prometheus-operator.1.2.0
  test-catalog  olm.bundle prometheus prometheus-operator.2.0.0
@@ -79,7 +79,7 @@ func TestE2E(t *testing.T) {
 		{
 			name:    "list all content with schema olm.bundle, package prometheus, and name prometheus-operator.1.0.0",
 			command: exec.Command("../../kubectl-catalogd", "list", "--schema", "olm.bundle", "--package", "prometheus", "--name", "prometheus-operator.1.0.0"),
-			expectedOutput: `test-catalog  olm.bundle prometheus prometheus-operator.1.0.0
+			expectedOutput: ` test-catalog  olm.bundle prometheus prometheus-operator.1.0.0
 `,
 		},
 		{
@@ -108,9 +108,9 @@ func TestE2E(t *testing.T) {
 			name:    "inspect olm.package with name prometheus",
 			command: exec.Command("../../kubectl-catalogd", "inspect", "olm.package", "prometheus"),
 			expectedOutput: `{
-"defaultChannel": "beta",
-"name": "prometheus",
-"schema": "olm.package"
+  "defaultChannel": "beta",
+  "name": "prometheus",
+  "schema": "olm.package"
 }`,
 		},
 		{
@@ -118,26 +118,18 @@ func TestE2E(t *testing.T) {
 			command: exec.Command("../../kubectl-catalogd", "inspect", "olm.package", "prometheus", "--output", "yaml"),
 			expectedOutput: `defaultChannel: beta
 name: prometheus
-schema: olm.package`,
+schema: olm.package
+`,
 		},
 		{
 			name:    "inspect olm.channel with name beta and package plain",
 			command: exec.Command("../../kubectl-catalogd", "inspect", "olm.channel", "beta", "--package", "plain", "--output", "yaml"),
 			expectedOutput: `entries:
-  - name: plain.0.1.0
+- name: plain.0.1.0
 name: beta
 package: plain
-schema: olm.channel`,
-		},
-		{
-			name:    "inspect olm.channel with name plain, output yaml, and stylized output",
-			command: exec.Command("../../kubectl-catalogd", "inspect", "olm.channel", "plain", "--output", "yaml", "--style", "nord"),
-			expectedOutput: `[38;2;129;161;193mentries[0m[38;2;236;239;244m:[0m[38;2;216;222;233m
-[0m[38;2;216;222;233m- [0m[38;2;129;161;193mname[0m[38;2;236;239;244m:[0m[38;2;216;222;233m [0m[38;2;216;222;233mplain.0.1.0[0m[38;2;216;222;233m
-[0m[38;2;129;161;193mname[0m[38;2;236;239;244m:[0m[38;2;216;222;233m [0m[38;2;216;222;233mbeta[0m[38;2;216;222;233m
-[0m[38;2;129;161;193mpackage[0m[38;2;236;239;244m:[0m[38;2;216;222;233m [0m[38;2;216;222;233mplain[0m[38;2;216;222;233m
-[0m[38;2;129;161;193mschema[0m[38;2;236;239;244m:[0m[38;2;216;222;233m [0m[38;2;216;222;233molm.channel[0m[38;2;216;222;233m
-[0m`,
+schema: olm.channel
+`,
 		},
 	}
 

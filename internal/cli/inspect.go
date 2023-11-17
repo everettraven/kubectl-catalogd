@@ -62,7 +62,7 @@ var inspectCfg = inspector{
 
 func init() {
 	inspectCmd.Flags().StringVar(&inspectCfg.pkg, "package", "", "specify the FBC object package that should be used to filter the resulting output")
-	inspectCmd.Flags().StringVar(&inspectCfg.catalogName, "catalog", "", "specify the catalog that should be used. By default it will fetch from all catalogs")
+	inspectCmd.Flags().StringVar(&inspectCfg.catalogName, "catalog", "", "specify the catalog that should be used. By default it will fetch from all catalogs and use the first match")
 	inspectCmd.Flags().StringVar(&inspectCfg.output, "output", "json", "specify the output format. Valid values are 'json' and 'yaml'")
 	inspectCmd.Flags().StringVar(&inspectCfg.style, "style", "", "specify the style to use for syntax highlighting. If this value is empty syntax highlighting is disabled.")
 }

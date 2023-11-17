@@ -1,2 +1,4 @@
 kubectl-catalogd
 catalogd
+cover.out
+dist/
