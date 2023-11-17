@@ -45,4 +45,4 @@ krews:
         base:
           owner: everettraven
           name: krew-index
-          branch: main
+          branch: master
