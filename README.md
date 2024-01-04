@@ -10,6 +10,12 @@
 >version of the plugin, run `kubectl catalogd version`. The output will contain the current version
 >of the kubectl-catalogd plugin _and_ the version of catalogd it was built against.
 
+## Installation
+```
+$ kubectl krew index add everettraven https://github.com/everettraven/krew-index.git
+$ kubectl krew install everettraven/catalogd
+```
+
 ## Subcommands
 These examples assume a running Kubernetes cluster with catalogd installed and an unpacked `Catalog` resource.
 These examples use a minimal catalog to keep the output brief and easier to read. The catalog used can be found under `test/testdata/`.
