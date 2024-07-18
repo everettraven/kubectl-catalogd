@@ -15,11 +15,11 @@ import (
 )
 
 func TestE2E(t *testing.T) {
-	catalog := &v1alpha1.Catalog{
+	catalog := &v1alpha1.ClusterCatalog{
 		ObjectMeta: v1.ObjectMeta{
 			Name: "test-catalog",
 		},
-		Spec: v1alpha1.CatalogSpec{
+		Spec: v1alpha1.ClusterCatalogSpec{
 			Source: v1alpha1.CatalogSource{
 				Type: v1alpha1.SourceTypeImage,
 				Image: &v1alpha1.ImageSource{

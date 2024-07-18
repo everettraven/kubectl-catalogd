@@ -13,7 +13,7 @@ import (
 )
 
 type CatalogContentStreamer interface {
-	StreamCatalogContents(ctx context.Context, catalog v1alpha1.Catalog) (io.ReadCloser, error)
+	StreamCatalogContents(ctx context.Context, catalog v1alpha1.ClusterCatalog) (io.ReadCloser, error)
 }
 
 type instance struct {
@@ -26,7 +26,7 @@ func New(client corev1.CoreV1Interface) CatalogContentStreamer {
 	}
 }
 
-func (c *instance) StreamCatalogContents(ctx context.Context, catalog v1alpha1.Catalog) (io.ReadCloser, error) {
+func (c *instance) StreamCatalogContents(ctx context.Context, catalog v1alpha1.ClusterCatalog) (io.ReadCloser, error) {
 	if !meta.IsStatusConditionTrue(catalog.Status.Conditions, v1alpha1.TypeUnpacked) {
 		return nil, fmt.Errorf("catalog %q is not unpacked", catalog.Name)
 	}
@@ -44,9 +44,11 @@ func (c *instance) StreamCatalogContents(ctx context.Context, catalog v1alpha1.C
 	port := url.Port()
 	// the ProxyGet() call below needs an explicit port value, so if
 	// value from url.Port() is empty, we assume port 80.
-	if port == "" {
-		port = "80"
-	}
+    if url.Scheme == "http" && port == "" {
+        port = "80"
+    }else if url.Scheme == "https" && port == "" {
+        port = "443"
+    }
 
 	rw := c.client.Services(ns).ProxyGet(
 		url.Scheme,

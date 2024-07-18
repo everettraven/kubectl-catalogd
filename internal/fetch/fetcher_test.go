@@ -16,7 +16,7 @@ func TestFetcher(t *testing.T) {
 		name             string
 		fetcher          CatalogFetcher
 		filters          []CatalogFilterFunc
-		expectedCatalogs []v1alpha1.Catalog
+		expectedCatalogs []v1alpha1.ClusterCatalog
 	}{
 		{
 			name: "no catalogs exist, no catalogs returned",
@@ -28,7 +28,7 @@ func TestFetcher(t *testing.T) {
 				dc := fake.NewSimpleDynamicClient(scheme)
 				return New(dc)
 			}(),
-			expectedCatalogs: []v1alpha1.Catalog{},
+			expectedCatalogs: []v1alpha1.ClusterCatalog{},
 		},
 		{
 			name: "catalogs exist, no filters, all catalogs returned",
@@ -37,17 +37,17 @@ func TestFetcher(t *testing.T) {
 				err := v1alpha1.AddToScheme(scheme)
 				require.NoError(t, err)
 
-				dc := fake.NewSimpleDynamicClient(scheme, &v1alpha1.Catalog{
+				dc := fake.NewSimpleDynamicClient(scheme, &v1alpha1.ClusterCatalog{
 					ObjectMeta: metav1.ObjectMeta{
 						Name: "test-catalog",
 					},
 				})
 				return New(dc)
 			}(),
-			expectedCatalogs: []v1alpha1.Catalog{
+			expectedCatalogs: []v1alpha1.ClusterCatalog{
 				{
 					TypeMeta: metav1.TypeMeta{
-						Kind:       "Catalog",
+						Kind:       "ClusterCatalog",
 						APIVersion: v1alpha1.GroupVersion.String(),
 					},
 					ObjectMeta: metav1.ObjectMeta{
@@ -63,21 +63,21 @@ func TestFetcher(t *testing.T) {
 				err := v1alpha1.AddToScheme(scheme)
 				require.NoError(t, err)
 
-				dc := fake.NewSimpleDynamicClient(scheme, &v1alpha1.Catalog{
+				dc := fake.NewSimpleDynamicClient(scheme, &v1alpha1.ClusterCatalog{
 					ObjectMeta: metav1.ObjectMeta{
 						Name: "test-catalog",
 					},
-				}, &v1alpha1.Catalog{
+				}, &v1alpha1.ClusterCatalog{
 					ObjectMeta: metav1.ObjectMeta{
 						Name: "another-catalog",
 					},
 				})
 				return New(dc)
 			}(),
-			expectedCatalogs: []v1alpha1.Catalog{
+			expectedCatalogs: []v1alpha1.ClusterCatalog{
 				{
 					TypeMeta: metav1.TypeMeta{
-						Kind:       "Catalog",
+						Kind:       "ClusterCatalog",
 						APIVersion: v1alpha1.GroupVersion.String(),
 					},
 					ObjectMeta: metav1.ObjectMeta{
@@ -96,11 +96,11 @@ func TestFetcher(t *testing.T) {
 				err := v1alpha1.AddToScheme(scheme)
 				require.NoError(t, err)
 
-				dc := fake.NewSimpleDynamicClient(scheme, &v1alpha1.Catalog{
+				dc := fake.NewSimpleDynamicClient(scheme, &v1alpha1.ClusterCatalog{
 					ObjectMeta: metav1.ObjectMeta{
 						Name: "test-catalog",
 					},
-					Status: v1alpha1.CatalogStatus{
+					Status: v1alpha1.ClusterCatalogStatus{
 						Conditions: []metav1.Condition{
 							{
 								Type:   v1alpha1.TypeUnpacked,
@@ -108,23 +108,23 @@ func TestFetcher(t *testing.T) {
 							},
 						},
 					},
-				}, &v1alpha1.Catalog{
+				}, &v1alpha1.ClusterCatalog{
 					ObjectMeta: metav1.ObjectMeta{
 						Name: "another-catalog",
 					},
 				})
 				return New(dc)
 			}(),
-			expectedCatalogs: []v1alpha1.Catalog{
+			expectedCatalogs: []v1alpha1.ClusterCatalog{
 				{
 					TypeMeta: metav1.TypeMeta{
-						Kind:       "Catalog",
+						Kind:       "ClusterCatalog",
 						APIVersion: v1alpha1.GroupVersion.String(),
 					},
 					ObjectMeta: metav1.ObjectMeta{
 						Name: "test-catalog",
 					},
-					Status: v1alpha1.CatalogStatus{
+					Status: v1alpha1.ClusterCatalogStatus{
 						Conditions: []metav1.Condition{
 							{
 								Type:   v1alpha1.TypeUnpacked,

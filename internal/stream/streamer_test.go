@@ -38,7 +38,7 @@ func TestStreamer(t *testing.T) {
 	var tests = []struct {
 		name            string
 		streamer        CatalogContentStreamer
-		catalog         v1alpha1.Catalog
+		catalog         v1alpha1.ClusterCatalog
 		expectedContent string
 		expectError     bool
 	}{
@@ -56,8 +56,8 @@ func TestStreamer(t *testing.T) {
 				}
 				return New(kc.CoreV1())
 			}(),
-			catalog: v1alpha1.Catalog{
-				Status: v1alpha1.CatalogStatus{
+			catalog: v1alpha1.ClusterCatalog{
+				Status: v1alpha1.ClusterCatalogStatus{
 					Conditions: []v1.Condition{
 						{
 							Type:   v1alpha1.TypeUnpacked,
@@ -75,7 +75,7 @@ func TestStreamer(t *testing.T) {
 				kc := fake.NewSimpleClientset()
 				return New(kc.CoreV1())
 			}(),
-			catalog:     v1alpha1.Catalog{},
+			catalog:     v1alpha1.ClusterCatalog{},
 			expectError: true,
 		},
 	}

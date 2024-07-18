@@ -10,9 +10,9 @@ import (
 	"k8s.io/client-go/dynamic"
 )
 
-type CatalogFilterFunc func(catalog *v1alpha1.Catalog) bool
+type CatalogFilterFunc func(catalog *v1alpha1.ClusterCatalog) bool
 type CatalogFetcher interface {
-	FetchCatalogs(ctx context.Context, filters ...CatalogFilterFunc) ([]v1alpha1.Catalog, error)
+	FetchCatalogs(ctx context.Context, filters ...CatalogFilterFunc) ([]v1alpha1.ClusterCatalog, error)
 }
 
 func New(client dynamic.Interface) CatalogFetcher {
@@ -25,9 +25,9 @@ type instance struct {
 	client dynamic.Interface
 }
 
-func (c *instance) FetchCatalogs(ctx context.Context, filters ...CatalogFilterFunc) ([]v1alpha1.Catalog, error) {
-	catalogList := &v1alpha1.CatalogList{}
-	unstructCatalogs, err := c.client.Resource(v1alpha1.GroupVersion.WithResource("catalogs")).List(ctx, v1.ListOptions{})
+func (c *instance) FetchCatalogs(ctx context.Context, filters ...CatalogFilterFunc) ([]v1alpha1.ClusterCatalog, error) {
+	catalogList := &v1alpha1.ClusterCatalogList{}
+	unstructCatalogs, err := c.client.Resource(v1alpha1.GroupVersion.WithResource("clustercatalogs")).List(ctx, v1.ListOptions{})
 	if err != nil {
 		return nil, err
 	}
@@ -37,7 +37,7 @@ func (c *instance) FetchCatalogs(ctx context.Context, filters ...CatalogFilterFu
 		return nil, err
 	}
 
-	catalogs := []v1alpha1.Catalog{}
+	catalogs := []v1alpha1.ClusterCatalog{}
 	for _, catalog := range catalogList.Items {
 		filteredOut := false
 		for _, filter := range filters {
@@ -57,7 +57,7 @@ func (c *instance) FetchCatalogs(ctx context.Context, filters ...CatalogFilterFu
 }
 
 func WithNameFilter(name string) CatalogFilterFunc {
-	return func(catalog *v1alpha1.Catalog) bool {
+	return func(catalog *v1alpha1.ClusterCatalog) bool {
 		if name == "" {
 			return true
 		}
@@ -66,7 +66,7 @@ func WithNameFilter(name string) CatalogFilterFunc {
 }
 
 func WithUnpackedFilter() CatalogFilterFunc {
-	return func(catalog *v1alpha1.Catalog) bool {
+	return func(catalog *v1alpha1.ClusterCatalog) bool {
 		return meta.IsStatusConditionTrue(catalog.Status.Conditions, v1alpha1.TypeUnpacked)
 	}
 }
